@@ -44,7 +44,6 @@ public class JSONComparison {
         Map<String, Object> rightFlatMap = flatten(rightMap);
 
         difference = Maps.difference(leftFlatMap, rightFlatMap);
-        System.out.println(difference.entriesInCommon().size());
 
         difference.entriesInCommon().forEach((k, v) -> {
             // System.out.println(k + v);
@@ -72,15 +71,14 @@ public class JSONComparison {
                             Files.write(dest,
                                     List.of(files[i].getName() + " compared to "
                                             + files[j].getName() + ": Total matches = "
-                                            + c.getDifference().entriesInCommon().size()
-                                            + " Unique entries: " + (c.getDifference().entriesDiffering().size())),
+                                            + c.getDifference().entriesInCommon().size()),
                                     StandardOpenOption.CREATE, StandardOpenOption.WRITE);
                         else
                             Files.write(dest,
                                     List.of(files[i].getName() + " compared to "
                                             + files[j].getName() + ": Total matches = "
                                             + c.getDifference().entriesInCommon().size()
-                                            + " Unique entries: " + (c.getDifference().entriesDiffering().size())),
+                                            + " Unique entries: " + (c.getDifference().entriesOnlyOnLeft().size()+c.getDifference().entriesOnlyOnRight().size())),
                                     StandardOpenOption.APPEND, StandardOpenOption.WRITE);
 
                         /*
