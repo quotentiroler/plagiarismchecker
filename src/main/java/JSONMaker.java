@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
 import java.util.HashSet;
 
 import java.util.List;
@@ -79,6 +78,7 @@ public class JSONMaker {
     public static void runThis(Path p) throws IOException {
 
         JSONMaker j;
+        new File(p + "/results/").mkdirs();
         for (File f : p.toFile().listFiles())
             if (f.getName().startsWith("task"))
                 j = new JSONMaker(f.toPath(), p.toString() + "/results/" + f.getName() + ".json");
@@ -89,7 +89,6 @@ public class JSONMaker {
 
         Path src = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/");
         runThis(src);
-
 
     }
 

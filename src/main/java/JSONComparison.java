@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -44,10 +42,6 @@ public class JSONComparison {
         Map<String, Object> rightFlatMap = flatten(rightMap);
 
         difference = Maps.difference(leftFlatMap, rightFlatMap);
-
-        difference.entriesInCommon().forEach((k, v) -> {
-            // System.out.println(k + v);
-        });
     }
 
     public JSONComparison(Path srcDir)
@@ -66,17 +60,18 @@ public class JSONComparison {
                                 .parseReader(new InputStreamReader(
                                         new FileInputStream(files[j].toString()), "UTF-8"));
                         JSONComparison c = new JSONComparison(leftJson, rightJson);
+                        new File(srcDir + "/out/").mkdirs();
                         Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + "-evaluation.json");
-                        int matches =  c.getDifference().entriesInCommon().size();
-                        int total = c.getDifference().entriesOnlyOnLeft().size()+c.getDifference().entriesOnlyOnRight().size();
+                        int matches = c.getDifference().entriesInCommon().size();
+                        int total = c.getDifference().entriesOnlyOnLeft().size()
+                                + c.getDifference().entriesOnlyOnRight().size();
                         if (!Files.exists(dest))
                             Files.write(dest,
                                     List.of(files[i].getName() + " compared to "
                                             + files[j].getName() + ": Total matches = "
                                             + matches
                                             + " Unique entries: " + total
-                                            + " Similarity: " + (float) matches/(matches+total)
-                                            ),
+                                            + " Similarity: " + (float) matches / (matches + total)),
                                     StandardOpenOption.CREATE, StandardOpenOption.WRITE);
                         else
                             Files.write(dest,
@@ -84,8 +79,7 @@ public class JSONComparison {
                                             + files[j].getName() + ": Total matches = "
                                             + matches
                                             + " Unique entries: " + total
-                                            + " Similarity: " +  (float) matches/(matches+total)
-                                            ),
+                                            + " Similarity: " + (float) matches / (matches + total)),
                                     StandardOpenOption.APPEND, StandardOpenOption.WRITE);
 
                         /*
@@ -146,8 +140,7 @@ public class JSONComparison {
 
         Path p = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/results/");
 
-        for (File f : Paths.get(p + "/out").toFile().listFiles())
-            f.delete();
+       // for (File f : Paths.get(p + "/out").toFile().listFiles()) f.delete();
 
         JSONComparison f = new JSONComparison(p);
 
