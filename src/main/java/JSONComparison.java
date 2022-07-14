@@ -67,20 +67,25 @@ public class JSONComparison {
                                         new FileInputStream(files[j].toString()), "UTF-8"));
                         JSONComparison c = new JSONComparison(leftJson, rightJson);
                         Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + "-evaluation.json");
+                        int matches =  c.getDifference().entriesInCommon().size();
+                        int total = c.getDifference().entriesOnlyOnLeft().size()+c.getDifference().entriesOnlyOnRight().size();
                         if (!Files.exists(dest))
                             Files.write(dest,
                                     List.of(files[i].getName() + " compared to "
                                             + files[j].getName() + ": Total matches = "
-                                            + c.getDifference().entriesInCommon().size()
-                                            + " Unique entries: " + (c.getDifference().entriesOnlyOnLeft().size()+c.getDifference().entriesOnlyOnRight().size())
+                                            + matches
+                                            + " Unique entries: " + total
+                                            + " Similarity: " + (float) matches/(matches+total)
                                             ),
                                     StandardOpenOption.CREATE, StandardOpenOption.WRITE);
                         else
                             Files.write(dest,
                                     List.of(files[i].getName() + " compared to "
                                             + files[j].getName() + ": Total matches = "
-                                            + c.getDifference().entriesInCommon().size()
-                                            + " Unique entries: " + (c.getDifference().entriesOnlyOnLeft().size()+c.getDifference().entriesOnlyOnRight().size())),
+                                            + matches
+                                            + " Unique entries: " + total
+                                            + " Similarity: " +  (float) matches/(matches+total)
+                                            ),
                                     StandardOpenOption.APPEND, StandardOpenOption.WRITE);
 
                         /*
