@@ -71,7 +71,9 @@ public class JSONComparison {
                             Files.write(dest,
                                     List.of(files[i].getName() + " compared to "
                                             + files[j].getName() + ": Total matches = "
-                                            + c.getDifference().entriesInCommon().size()),
+                                            + c.getDifference().entriesInCommon().size()
+                                            + " Unique entries: " + (c.getDifference().entriesOnlyOnLeft().size()+c.getDifference().entriesOnlyOnRight().size())
+                                            ),
                                     StandardOpenOption.CREATE, StandardOpenOption.WRITE);
                         else
                             Files.write(dest,
