@@ -66,7 +66,7 @@ public class JSONComparison {
                                         new FileInputStream(files[j].toString()), "UTF-8"));
                         JSONComparison c = new JSONComparison(leftJson, rightJson);
                         new File(srcDir + "/out/").mkdirs();
-                        Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + "-evaluation.json");
+                        Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + ".txt");
                         int matches = c.getDifference().entriesInCommon().size();
                         int total = c.getDifference().entriesOnlyOnLeft().size()
                                 + c.getDifference().entriesOnlyOnRight().size();

@@ -25,21 +25,14 @@ public class ExcludeFingerprints {
 
     public ExcludeFingerprints(Path fp, Path jsonFile) throws IOException {
 
-        JSONObject fingerPrints = new JSONMaker(fp).getResult();
-        JSONObject object = new JSONMaker(jsonFile).getResult();
+        JSONObject fingerPrints = parseJSONFile(fp.toString());
+        JSONObject object = parseJSONFile(jsonFile.toString());
 
-        result = new JSONMaker(jsonFile).getResult();
+        result = parseJSONFile(jsonFile.toString());
 
         JSONComparison c = new JSONComparison(object, fingerPrints);
         System.out.println(c.getMatches().size());
         c.getMatches().forEach((k, v) -> {
-            String[] loc = k.split("/");
-            result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
-                    .remove(Integer.parseInt(loc[5]));
-        });
-
-        JSONComparison b = new JSONComparison(fingerPrints, object);
-        b.getMatches().forEach((k, v) -> {
             String[] loc = k.split("/");
             result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
                     .remove(Integer.parseInt(loc[5]));
@@ -59,14 +52,6 @@ public class ExcludeFingerprints {
             result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
                     .remove(Integer.parseInt(loc[5]));
         });
-
-        JSONComparison b = new JSONComparison(fingerPrints, object);
-        b.getMatches().forEach((k, v) -> {
-            String[] loc = k.split("/");
-            result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
-                    .remove(Integer.parseInt(loc[5]));
-        });
-
         result = removeNullsFrom(result);
     }
 
@@ -122,7 +107,7 @@ public class ExcludeFingerprints {
         JSONObject o1 = parseJSONFile(pathOfJson.toString());
 
         JSONObject o2;
-        ExcludeFingerprints ff;
+
         new File(pathOfDir + "/fpExcluded/").mkdirs();
 
         for (File f : pathOfDir.toFile().listFiles())
@@ -131,8 +116,6 @@ public class ExcludeFingerprints {
                 ExcludeFingerprints ef = new ExcludeFingerprints(o1, o2);
                 Path dest = Paths.get(f.getParent() + "/fpExcluded/" + f.getName());
                 Files.write(dest, List.of(ef.getResult().toString()));
-                TimeUnit.SECONDS.sleep(1);
-               // ff = new ExcludeFingerprints(pathOfJson, dest);
             }
     }
 
@@ -142,8 +125,6 @@ public class ExcludeFingerprints {
         Path p2 = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/results/");
 
         letsGo(p1,p2);
-        
-
 
 
     }
