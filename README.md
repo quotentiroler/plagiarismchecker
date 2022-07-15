@@ -1,6 +1,6 @@
 Plagiarism check based on fingerprinting
 
-This plagiarism checker works currently with C++ files (see FileExtensions.java)
+Check multiple C++ source-dirs for plagiarism
 
 How to run:
 
