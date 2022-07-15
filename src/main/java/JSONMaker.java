@@ -62,6 +62,49 @@ public class JSONMaker {
         }
     }
 
+    public JSONMaker(Path srcPath) throws IOException {
+
+        result = new JSONObject();
+
+        for (File codeFile : srcPath.toFile().listFiles()) {
+
+            var wrapper2 = new Object() {
+                int line = 0;
+                JSONArray jsonArray;
+                HashSet<String> allTokens = new HashSet<>();
+                JSONObject fileJSON = new JSONObject();
+            };
+
+            List<String> name = Collections
+                    .synchronizedList(new ArrayList<>(Arrays.asList(codeFile.getName() + ":")));
+            if (codeFile.getName().length() >= 2)
+                if (isInEnum(name.get(0).substring(name.get(0).indexOf(".") + 1, name.get(0).length() - 1),
+                        FileExtensions.class)) {
+                    System.out
+                            .println(name.get(0).substring(name.get(0).indexOf(".") + 1,
+                                    name.get(0).length() - 1));
+
+                    Stream<String> lines = Files.lines(Path.of(codeFile.getPath()));
+                    lines.forEach(c -> {
+                        wrapper2.jsonArray = new JSONArray();
+                        wrapper2.line++;
+                        for (String token : c.split(" ")) {
+                            if (wrapper2.allTokens.add(token.trim()) && !isInEnum(token, Keywords.class)) {
+                                wrapper2.jsonArray.put(token.trim());
+                            }
+                        }
+                        if (!wrapper2.jsonArray.isEmpty())
+                            wrapper2.fileJSON.append(wrapper2.line + "", wrapper2.jsonArray);
+
+                    });
+                    lines.close();
+                }
+
+            result.append(codeFile.getName(), wrapper2.fileJSON);
+        }
+
+    }
+
     public JSONObject getResult() {
         return result;
     }

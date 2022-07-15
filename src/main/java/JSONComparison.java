@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import org.json.JSONObject;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
@@ -28,6 +31,7 @@ import com.google.gwt.thirdparty.guava.common.collect.Maps;
 public class JSONComparison {
 
     private MapDifference<String, Object> difference;
+    private Map<String, Object> matches;
 
     public JSONComparison(JsonElement leftJson, JsonElement rightJson)
             throws JsonIOException, JsonSyntaxException, UnsupportedEncodingException, FileNotFoundException {
@@ -42,6 +46,7 @@ public class JSONComparison {
         Map<String, Object> rightFlatMap = flatten(rightMap);
 
         difference = Maps.difference(leftFlatMap, rightFlatMap);
+        matches = Maps.difference(leftFlatMap, rightFlatMap).entriesInCommon();
     }
 
     public JSONComparison(Path srcDir)
@@ -88,7 +93,7 @@ public class JSONComparison {
                          * 
                          * 
                          * try {
-                         * Files.write(dest, List.of(k + v),
+                         * Files.write(dest, List.of(k +": "+ v),
                          * StandardOpenOption.APPEND, StandardOpenOption.WRITE);
                          * 
                          * } catch (IOException e) {
@@ -104,8 +109,27 @@ public class JSONComparison {
         }
     }
 
+    public JSONComparison(JSONObject leftJson, JSONObject rightJson) {
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, Object>>() {
+        }.getType();
+
+        Map<String, Object> leftMap = gson.fromJson(leftJson.toString(), type);
+        Map<String, Object> rightMap = gson.fromJson(rightJson.toString(), type);
+        Map<String, Object> leftFlatMap = flatten(leftMap);
+        Map<String, Object> rightFlatMap = flatten(rightMap);
+
+        difference = Maps.difference(leftFlatMap, rightFlatMap);
+        matches = Maps.difference(leftFlatMap, rightFlatMap).entriesInCommon();
+    }
+
     public MapDifference<String, Object> getDifference() {
         return difference;
+    }
+
+    public Map<String, Object> getMatches() {
+        return matches;
     }
 
     public static Map<String, Object> flatten(Map<String, Object> map) {
@@ -138,9 +162,9 @@ public class JSONComparison {
     public static void main(String[] args)
             throws JsonIOException, JsonSyntaxException, IOException {
 
-        Path p = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/results/");
+        Path p = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/results/fpExcluded/");
 
-       // for (File f : Paths.get(p + "/out").toFile().listFiles()) f.delete();
+        // for (File f : Paths.get(p + "/out").toFile().listFiles()) f.delete();
 
         JSONComparison f = new JSONComparison(p);
 

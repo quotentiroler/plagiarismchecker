@@ -48,7 +48,7 @@ public class CompareStreams {
         return matches + "Counter: " + counter + "\n";
     }
 
-    public static void compareResults(Path resultDir) throws IOException {
+    public static void compareAllFilesInDir(Path resultDir) throws IOException {
 
         for (int i = 0; i < resultDir.toFile().listFiles().length; i++) {
             for (int j = 0; j < resultDir.toFile().listFiles().length; j++) {
