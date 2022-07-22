@@ -77,7 +77,7 @@
 				<configuration>
 				  <archive>
 					<manifest>
-					  <mainClass>com.example.uploadingfiles.UploadingFilesApplication</mainClass>
+					  <mainClass>com.example.plagcheck.PlagCheckApp</mainClass>
 					</manifest>
 				  </archive>
 				  <descriptorRefs>

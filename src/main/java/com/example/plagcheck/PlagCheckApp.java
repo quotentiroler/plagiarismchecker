@@ -11,10 +11,10 @@ import com.example.plagcheck.storage.StorageService;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
-public class UploadingFilesApplication {
+public class PlagCheckApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UploadingFilesApplication.class, args);
+		SpringApplication.run(PlagCheckApp.class, args);
 	}
 
 	@Bean
