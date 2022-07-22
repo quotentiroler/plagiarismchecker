@@ -29,12 +29,12 @@ import com.google.gson.JsonParser;
 @RequestMapping(path = "/excludefp/")
 public class APIController {
 
-    @GetMapping("/demo")
+    @GetMapping("/")
     public String getDemo() {
-        return "POST 2 json files to results";
+        return "POST 2 json files to /excludefp/ like this: [json1,json2]. json1 will be removed from json2, result comes in response body";
     }
 
-    @RequestMapping(value = "/results", produces = "application/json", method = {
+    @RequestMapping(value = "/", produces = "application/json", method = {
             RequestMethod.POST })
     public ResponseEntity<String> getResults(@RequestBody(required = true) String fp)
             throws JsonMappingException, JsonProcessingException {
