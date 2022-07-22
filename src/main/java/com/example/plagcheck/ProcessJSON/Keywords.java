@@ -1,4 +1,4 @@
-
+package com.example.plagcheck.ProcessJSON;
 public enum Keywords {
 
   

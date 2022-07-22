@@ -1,3 +1,5 @@
+package com.example.plagcheck.ProcessJSON;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -24,11 +26,5 @@ public class DirPreparation {
             }
         }
 
-    }
-
-    public static void main(String[] args) {
-        String source = "/mnt/c/Users/Max/Desktop/Plagiarism Task 1/";
-        File srcDir = new File(source);
-        rec_processFiles(srcDir.listFiles());
     }
 }

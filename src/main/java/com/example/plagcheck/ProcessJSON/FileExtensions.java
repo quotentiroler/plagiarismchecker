@@ -1,5 +1,4 @@
-
-
+package com.example.plagcheck.ProcessJSON;
 public enum FileExtensions implements IFileType {
 
     CPP(".cpp"),

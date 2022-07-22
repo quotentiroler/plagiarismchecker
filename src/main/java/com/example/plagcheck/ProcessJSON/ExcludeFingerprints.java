@@ -1,3 +1,5 @@
+package com.example.plagcheck.ProcessJSON;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +25,20 @@ public class ExcludeFingerprints {
 
     private JSONObject result;
 
+    public ExcludeFingerprints(JSONObject fingerPrints, JSONObject object) {
+
+        result = new JSONObject(object.toString());
+
+        JSONComparison c = new JSONComparison(object, fingerPrints);
+        System.out.println(c.getMatches().size());
+        c.getMatches().forEach((k, v) -> {
+            String[] loc = k.split("/");
+            result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
+                    .remove(Integer.parseInt(loc[5]));
+        });
+        result = removeNullsFrom(result);
+    }
+
     public ExcludeFingerprints(Path fp, Path jsonFile) throws IOException {
 
         JSONObject fingerPrints = parseJSONFile(fp.toString());
@@ -39,20 +55,6 @@ public class ExcludeFingerprints {
         });
         result = removeNullsFrom(result);
 
-    }
-
-    public ExcludeFingerprints(JSONObject fingerPrints, JSONObject object) {
-
-        result = new JSONObject(object.toString());
-
-        JSONComparison c = new JSONComparison(object, fingerPrints);
-        System.out.println(c.getMatches().size());
-        c.getMatches().forEach((k, v) -> {
-            String[] loc = k.split("/");
-            result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
-                    .remove(Integer.parseInt(loc[5]));
-        });
-        result = removeNullsFrom(result);
     }
 
     public static JSONObject removeNullsFrom(JSONObject object) throws JSONException {
@@ -117,15 +119,5 @@ public class ExcludeFingerprints {
                 Path dest = Paths.get(f.getParent() + "/fpExcluded/" + f.getName());
                 Files.write(dest, List.of(ef.getResult().toString()));
             }
-    }
-
-    public static void main(String[] args) throws IOException, JSONException, InterruptedException {
-
-        Path p1 = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/fpToExclude.json");
-        Path p2 = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/results/");
-
-        letsGo(p1,p2);
-
-
     }
 }

@@ -1,4 +1,4 @@
-
+package com.example.plagcheck.ProcessJSON;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -125,13 +125,6 @@ public class JSONMaker {
         for (File f : p.toFile().listFiles())
             if (f.getName().startsWith("task"))
                 j = new JSONMaker(f.toPath(), p.toString() + "/results/" + f.getName() + ".json");
-
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        Path src = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/");
-        runThis(src);
 
     }
 

@@ -1,3 +1,4 @@
+package com.example.plagcheck.ProcessJSON;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,14 +57,10 @@ public class JSONComparison {
 
         for (int i = 0; i < files.length; i++) {
             if (!files[i].isDirectory()) {
-                JsonElement leftJson = JsonParser
-                        .parseReader(new InputStreamReader(new FileInputStream(files[i].toString()),
-                                "UTF-8"));
+                JSONObject leftJson = ExcludeFingerprints.parseJSONFile(files[i].toString());
                 for (int j = 0; j < files.length; j++) {
                     if (!files[j].isDirectory()) {
-                        JsonElement rightJson = JsonParser
-                                .parseReader(new InputStreamReader(
-                                        new FileInputStream(files[j].toString()), "UTF-8"));
+                        JSONObject rightJson = ExcludeFingerprints.parseJSONFile(files[j].toString());
                         JSONComparison c = new JSONComparison(leftJson, rightJson);
                         new File(srcDir + "/out/").mkdirs();
                         Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + ".txt");
@@ -158,16 +155,4 @@ public class JSONComparison {
         }
         return Stream.of(entry);
     }
-
-    public static void main(String[] args)
-            throws JsonIOException, JsonSyntaxException, IOException {
-
-        Path p = Paths.get("/mnt/c/Users/Max/Desktop/Plagiarism Task 1/Prepared/results/fpExcluded/");
-
-        // for (File f : Paths.get(p + "/out").toFile().listFiles()) f.delete();
-
-        JSONComparison f = new JSONComparison(p);
-
-    }
-
 }
