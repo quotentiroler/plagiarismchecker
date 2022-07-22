@@ -10,7 +10,7 @@ How to run:
 How to use:
 
 1. Have every source dir in a folder which name starts with "task"
-2. Do not have sub-dirs in that folder
+2. Do not have sub-dirs in the source dirs
 3. Zip all the source-dirs
 4. Upload .zip file
 5. (Optional) Exclude fingerprints by uploading a .json file from upload-dir/results - e.g. assignment code
