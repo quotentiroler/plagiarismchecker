@@ -24,3 +24,9 @@ What it does:
 4. compare JSON files using gson and "com.google.common.collect Interface MapDifference<K,V>"
 5. create output .txt files for every src-dir 
 
+Testing:
+
+Test folder is not up to date with code. You can test the fingerprint exclusion functionality at
+localhost:8080/excludefp
+
+
