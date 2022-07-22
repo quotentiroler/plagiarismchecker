@@ -31,10 +31,18 @@ public class ExcludeFingerprints {
 
         JSONComparison c = new JSONComparison(object, fingerPrints);
         System.out.println(c.getMatches().size());
+        var wrapper = new Object() {
+            int pointer = 0;
+            int currentLine = 0;
+        };
         c.getMatches().forEach((k, v) -> {
             String[] loc = k.split("/");
+            if (wrapper.currentLine != Integer.parseInt(loc[3]) )
+            wrapper.pointer = 0;
+            wrapper.currentLine = Integer.parseInt(loc[3]);
             result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
-                    .remove(Integer.parseInt(loc[5]));
+                    .remove(Integer.parseInt(loc[5])-wrapper.pointer);
+            wrapper.pointer++;
         });
         result = removeNullsFrom(result);
     }
@@ -48,10 +56,18 @@ public class ExcludeFingerprints {
 
         JSONComparison c = new JSONComparison(object, fingerPrints);
         System.out.println(c.getMatches().size());
+        var wrapper = new Object() {
+            int pointer = 0;
+            int currentLine;
+        };
         c.getMatches().forEach((k, v) -> {
             String[] loc = k.split("/");
+            if (wrapper.currentLine != Integer.parseInt(loc[3]) )
+            wrapper.pointer = 0;
+            wrapper.currentLine = Integer.parseInt(loc[3]);
             result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
-                    .remove(Integer.parseInt(loc[5]));
+                    .remove(Integer.parseInt(loc[5])-wrapper.pointer);
+            wrapper.pointer++;
         });
         result = removeNullsFrom(result);
 
