@@ -38,7 +38,6 @@ public class APIController {
             RequestMethod.POST })
     public ResponseEntity<String> getResults(@RequestBody(required = true) String fp)
             throws JsonMappingException, JsonProcessingException {
-        System.out.println(fp);
         JsonElement je = JsonParser.parseString(fp);
         JsonArray f = je.getAsJsonArray();
         JSONObject l = new JSONObject(f.get(0).getAsJsonObject().toString());
