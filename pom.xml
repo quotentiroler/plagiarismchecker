@@ -8,9 +8,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>uploading-files-complete</artifactId>
+	<artifactId>plagcheck</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>uploading-files-complete</name>
+	<name>plagiarism-checker</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
