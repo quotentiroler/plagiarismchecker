@@ -1,5 +1,6 @@
 /target
 /lib
+/upload-dir
 ### VisualStudioCode ###
 .vscode/*      # Maybe .vscode/**/* instead - see comments
 !.vscode/settings.json

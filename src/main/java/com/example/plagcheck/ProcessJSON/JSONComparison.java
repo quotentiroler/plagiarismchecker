@@ -26,13 +26,15 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.google.gwt.dev.util.collect.HashSet;
 import com.google.gwt.thirdparty.guava.common.collect.MapDifference;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 
 public class JSONComparison {
 
-    private MapDifference<String, Object> difference;
     private Map<String, Object> matches;
+    private JSONObject matchesJSON;
+    private int totalTokens;
 
     public JSONComparison(JsonElement leftJson, JsonElement rightJson)
             throws JsonIOException, JsonSyntaxException, UnsupportedEncodingException, FileNotFoundException {
@@ -45,9 +47,18 @@ public class JSONComparison {
         Map<String, Object> rightMap = gson.fromJson(rightJson.toString(), type);
         Map<String, Object> leftFlatMap = flatten(leftMap);
         Map<String, Object> rightFlatMap = flatten(rightMap);
+        HashSet<String> values = new HashSet<>();
+        rightFlatMap.forEach((k, v) -> values.add((String) v));
+        matchesJSON = new JSONObject();
 
-        difference = Maps.difference(leftFlatMap, rightFlatMap);
-        matches = Maps.difference(leftFlatMap, rightFlatMap).entriesInCommon();
+        leftFlatMap.forEach((k, v) -> {
+            if (!values.add((String) v)) {
+                matchesJSON.append((String) v, k);
+            }
+        });
+        totalTokens = values.size();
+        leftMap = gson.fromJson(matchesJSON.toString(), type);
+        matches = flatten(leftMap);
     }
 
     public JSONComparison(Path srcDir)
@@ -59,48 +70,36 @@ public class JSONComparison {
             if (!files[i].isDirectory()) {
                 JSONObject leftJson = ExcludeFingerprints.parseJSONFile(files[i].toString());
                 for (int j = 0; j < files.length; j++) {
-                    if (!files[j].isDirectory()) {
-                        JSONObject rightJson = ExcludeFingerprints.parseJSONFile(files[j].toString());
-                        JSONComparison c = new JSONComparison(leftJson, rightJson);
-                        new File(srcDir + "/out/").mkdirs();
-                        Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + ".txt");
-                        int matches = c.getDifference().entriesInCommon().size();
-                        int total = c.getDifference().entriesOnlyOnLeft().size()
-                                + c.getDifference().entriesOnlyOnRight().size();
-                        if (!Files.exists(dest))
-                            Files.write(dest,
-                                    List.of(files[i].getName() + " compared to "
-                                            + files[j].getName() + ": Total matches = "
-                                            + matches
-                                            + " Unique entries: " + total
-                                            + " Similarity: " + (float) matches / (matches + total)),
-                                    StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-                        else
-                            Files.write(dest,
-                                    List.of(files[i].getName() + " compared to "
-                                            + files[j].getName() + ": Total matches = "
-                                            + matches
-                                            + " Unique entries: " + total
-                                            + " Similarity: " + (float) matches / (matches + total)),
-                                    StandardOpenOption.APPEND, StandardOpenOption.WRITE);
+                    if (!files[i].getName().equals(files[j].getName()))
+                        if (!files[j].isDirectory()) {
 
-                        /*
-                         * For details, run this code
-                         * c.getDifference().entriesInCommon().forEach((k, v) -> {
-                         * 
-                         * 
-                         * try {
-                         * Files.write(dest, List.of(k +": "+ v),
-                         * StandardOpenOption.APPEND, StandardOpenOption.WRITE);
-                         * 
-                         * } catch (IOException e) {
-                         * // TODO Auto-generated catch block
-                         * e.printStackTrace();
-                         * }
-                         * });
-                         */
+                            JSONObject rightJson = ExcludeFingerprints.parseJSONFile(files[j].toString());
+                            JSONComparison c = new JSONComparison(leftJson, rightJson);
+                            new File(srcDir + "/out/").mkdirs();
+                            Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + ".txt");
+                            int matches = c.getMatchesJSON().length();
+                            int total = c.getTotalTokens();
+                            if (!Files.exists(dest))
+                                Files.write(dest,
+                                        List.of(files[i].getName() + " compared to "
+                                                + files[j].getName() + ": Total matches = "
+                                                + matches
+                                                + " Total entries: " + total
+                                                + " Similarity: " + (float) matches/total),
+                                        StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+                            else
+                                Files.write(dest,
+                                        List.of(files[i].getName() + " compared to "
+                                                + files[j].getName() + ": Total matches = "
+                                                + matches
+                                                + " Total entries: " + total
+                                                + " Similarity: " + (float) matches/total),
+                                        StandardOpenOption.APPEND, StandardOpenOption.WRITE);
 
-                    }
+                            Files.write(dest, List.of(c.getMatchesJSON().toString()), StandardOpenOption.APPEND,
+                                    StandardOpenOption.WRITE);
+
+                        }
                 }
             }
         }
@@ -116,13 +115,26 @@ public class JSONComparison {
         Map<String, Object> rightMap = gson.fromJson(rightJson.toString(), type);
         Map<String, Object> leftFlatMap = flatten(leftMap);
         Map<String, Object> rightFlatMap = flatten(rightMap);
+        HashSet<String> values = new HashSet<>();
+        rightFlatMap.forEach((k, v) -> values.add((String) v));
+        matchesJSON = new JSONObject();
 
-        difference = Maps.difference(leftFlatMap, rightFlatMap);
-        matches = Maps.difference(leftFlatMap, rightFlatMap).entriesInCommon();
+        leftFlatMap.forEach((k, v) -> {
+            if (!values.add((String) v)) {
+                matchesJSON.append((String) v, k);
+            }
+        });
+        totalTokens = values.size();
+        leftMap = gson.fromJson(matchesJSON.toString(), type);
+        matches = flatten(leftMap);
     }
 
-    public MapDifference<String, Object> getDifference() {
-        return difference;
+    public int getTotalTokens() {
+        return totalTokens;
+    }
+
+    public JSONObject getMatchesJSON() {
+        return matchesJSON;
     }
 
     public Map<String, Object> getMatches() {
