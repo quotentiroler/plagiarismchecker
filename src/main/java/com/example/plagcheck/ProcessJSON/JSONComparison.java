@@ -35,6 +35,7 @@ public class JSONComparison {
     private Map<String, Object> matches;
     private JSONObject matchesJSON;
     private int totalTokens;
+    private String summary = "";
 
     public JSONComparison(JsonElement leftJson, JsonElement rightJson)
             throws JsonIOException, JsonSyntaxException, UnsupportedEncodingException, FileNotFoundException {
@@ -72,29 +73,33 @@ public class JSONComparison {
                 for (int j = 0; j < files.length; j++) {
                     if (!files[i].getName().equals(files[j].getName()))
                         if (!files[j].isDirectory()) {
-
                             JSONObject rightJson = ExcludeFingerprints.parseJSONFile(files[j].toString());
                             JSONComparison c = new JSONComparison(leftJson, rightJson);
                             new File(srcDir + "/out/").mkdirs();
                             Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + ".txt");
                             int matches = c.getMatchesJSON().length();
                             int total = c.getTotalTokens();
-                            if (!Files.exists(dest))
+                            String out = "";
+                            if (!Files.exists(dest)) {
+                                out = files[i].getName() + " compared to "
+                                        + files[j].getName() + ": Total matches = "
+                                        + matches
+                                        + " Total entries: " + total
+                                        + " Similarity: " + (float) matches / total;
                                 Files.write(dest,
-                                        List.of(files[i].getName() + " compared to "
-                                                + files[j].getName() + ": Total matches = "
-                                                + matches
-                                                + " Total entries: " + total
-                                                + " Similarity: " + (float) matches/total),
+                                        List.of(out),
                                         StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-                            else
+                            } else {
+                                out = files[i].getName() + " compared to "
+                                        + files[j].getName() + ": Total matches = "
+                                        + matches
+                                        + " Total entries: " + total
+                                        + " Similarity: " + (float) matches / total;
                                 Files.write(dest,
-                                        List.of(files[i].getName() + " compared to "
-                                                + files[j].getName() + ": Total matches = "
-                                                + matches
-                                                + " Total entries: " + total
-                                                + " Similarity: " + (float) matches/total),
+                                        List.of(out),
                                         StandardOpenOption.APPEND, StandardOpenOption.WRITE);
+                            }
+                            summary += out + "\n";
 
                             Files.write(dest, List.of(c.getMatchesJSON().toString()), StandardOpenOption.APPEND,
                                     StandardOpenOption.WRITE);
@@ -103,6 +108,8 @@ public class JSONComparison {
                 }
             }
         }
+
+        Files.write(Paths.get(srcDir + "/out/Summary.txt"), List.of(summary));
     }
 
     public JSONComparison(JSONObject leftJson, JSONObject rightJson) {

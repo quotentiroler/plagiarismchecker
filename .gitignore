@@ -2,6 +2,7 @@
 /lib
 /upload-dir
 ### VisualStudioCode ###
+/.vscode
 .vscode/*      # Maybe .vscode/**/* instead - see comments
 !.vscode/settings.json
 !.vscode/tasks.json
