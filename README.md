@@ -1,8 +1,9 @@
-#Plagiarism detection based on document fingerprint creation + comparison
-Check multiple C++ source-dirs for plagiarism
+## Plagiarism detection based on document fingerprint creation + comparison
+### Check multiple C++ source-dirs for plagiarism
 
 This application can be packed into an executable .jar-file using the following command: 
-```"mvn clean compile assembly:single```
+
+```mvn clean compile assembly:single```
 
 Then open localhost:8080 in your browser
 
