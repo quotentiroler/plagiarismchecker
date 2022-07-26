@@ -5,7 +5,7 @@ This application can be packed into an executable .jar-file using the following 
 
 ```mvn clean compile assembly:single```
 
-Then open localhost:8080 in your browser
+Run it, then open localhost:8080 in your browser
 
 How to use:
 
