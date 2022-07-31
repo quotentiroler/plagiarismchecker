@@ -22,7 +22,7 @@ What it does:
 2. tokenize every codeFile (split by empty space)
 3. create JSON having format: {"codeFile.cpp":[{"line":[["value"]]}]} - line indicates first occurence of value in codeFile
 4. compare JSON files, log position of equal values
-5. create Summary.txt that gives an overview, and also .json.txt file for every compared source-dir. This includes a JSON having format: {"value":["/codeFile.cpp/0/line/0/position"]}. The value becomes the key because the same value can be in multiple files, while at this point very value is unique. 
+5. create Summary.txt that gives an overview, and also .json.txt file for every compared source-dir. This includes a JSON having format: {"value":["/codeFile.cpp/0/line/0/position"]}. The value becomes the key because the same value can be in multiple files, while at this point every value is unique. 
 
 What do the results say?
 
