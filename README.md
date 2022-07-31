@@ -1,7 +1,7 @@
 ## Plagiarism detection based on document fingerprint creation + comparison
 ### Check multiple C++ source-dirs for plagiarism
 
-This application can be packed into an executable .jar-file using the following command: 
+This maven application can be packed into an executable .jar-file using the following command: 
 
 ```mvn clean compile assembly:single```
 
