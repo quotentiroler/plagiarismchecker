@@ -20,14 +20,13 @@ What it does:
 
 1. Walk through src-dirs (they will be compared in the end, need to start with "task")
 2. tokenize every codeFile (split by empty space)
-3. create JSON, consisting of JSONObjects for each file with fingerprints, save to ../results/
+3. create JSON having format: {"codeFile.cpp":[{"line":[["value"]]}]} - line indicates first occurence of value in codeFile
 4. compare JSON files, log position of equal values
-5. create output .txt files for every src-dir and also Summary.txt that gives an overview
+5. create Summary.txt that gives an overview, and also .json.txt file for every compared source-dir. This includes a JSON having format: {"value":["/codeFile.cpp/0/line/0/position"]}. The value becomes the key because the same value can be in multiple files, while at this point very value is unique. 
 
 What do the results say?
 
-The results show a fingerprint similariy between 0 and 1.
-1 means that it is exactly the same fingerprint. Renaming variables and methods decreases the similarity, but this does not lead to a big change unless the code is very short and only consists of a few expressions in total. The similarity interval for possible plagiarism depends on the compared directories. It makes sense to investigate the highest similarities manually. 
+The results show a fingerprint similariy of 2 source-dirs between 0 and 1, representing the ratio of matching values to all values. The code files need to be formatted in a IDE-typical way to have accurate results.
 
 Testing:
 
