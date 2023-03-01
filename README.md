@@ -26,7 +26,7 @@ What it does:
 
 What do the results say?
 
-The results show a fingerprint similariy of 2 source-dirs between 0 and 1, representing the ratio of matching values to all values. The code files need to be formatted in a IDE-typical way to have accurate results. The results look like this:
+The results show a fingerprint similarity of 2 source-dirs between 0 and 1, representing the ratio of matching values to all values. The code files need to be formatted in a IDE-typical way to have accurate results. The results look like this:
 
 ``` 
 task1-aaaa.json compared to task1-bbbbbb.json: Total matches = 2 Unique entries: 995 Similarity: 0.002006018
@@ -48,7 +48,7 @@ task1-aaaaa.json compared to task1-ffffff.json: Total matches = 1 Unique entries
 /server_thread.h/0/4/0/0: "shared.h"
 ```
 
-The similarity is usually below 0.1 . For any higher similarity, further investigation is recommended. The use of the tool alone is not sufficient to conscientiously detect plagiarism. 
+The similarity is usually very low for different code files. For any similarity that is clearly above average, further investigation is recommended. The use of the tool alone is not sufficient to conscientiously detect plagiarism. 
 
 Testing:
 
