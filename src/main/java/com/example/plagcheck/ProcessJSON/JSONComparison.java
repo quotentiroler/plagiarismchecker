@@ -1,16 +1,15 @@
 package com.example.plagcheck.ProcessJSON;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,17 +17,15 @@ import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.json.JSONObject;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.gwt.dev.util.collect.HashSet;
-import com.google.gwt.thirdparty.guava.common.collect.MapDifference;
-import com.google.gwt.thirdparty.guava.common.collect.Maps;
+
+import org.json.JSONObject;
+import java.lang.reflect.Type;
 
 public class JSONComparison {
 
