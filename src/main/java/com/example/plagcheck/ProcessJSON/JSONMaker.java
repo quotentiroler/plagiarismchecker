@@ -120,11 +120,10 @@ public class JSONMaker {
 
     public static void runThis(Path p) throws IOException {
 
-        JSONMaker j;
         new File(p + "/results/").mkdirs();
         for (File f : p.toFile().listFiles())
             if (f.getName().startsWith("task"))
-                j = new JSONMaker(f.toPath(), p.toString() + "/results/" + f.getName() + ".json");
+                new JSONMaker(f.toPath(), p.toString() + "/results/" + f.getName() + ".json");
 
     }
 
