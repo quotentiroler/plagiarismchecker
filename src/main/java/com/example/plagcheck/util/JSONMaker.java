@@ -1,4 +1,4 @@
-package com.example.plagcheck.ProcessJSON;
+package com.example.plagcheck.util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class JSONMaker {
 
-    static private JSONObject result;
+    private static JSONObject result;
 
     public JSONMaker(Path srcPath, String targetPath) throws IOException {
         result = new JSONObject();
@@ -37,10 +37,6 @@ public class JSONMaker {
             if (codeFile.getName().length() >= 2)
                 if (isInEnum(name.get(0).substring(name.get(0).indexOf(".") + 1, name.get(0).length() - 1),
                         FileExtensions.class)) {
-                    System.out
-                            .println(name.get(0).substring(name.get(0).indexOf(".") + 1,
-                                    name.get(0).length() - 1));
-
                     Stream<String> lines = Files.lines(Path.of(codeFile.getPath()));
                     lines.forEach(c -> {
                         wrapper2.jsonArray = new JSONArray();
@@ -80,10 +76,6 @@ public class JSONMaker {
             if (codeFile.getName().length() >= 2)
                 if (isInEnum(name.get(0).substring(name.get(0).indexOf(".") + 1, name.get(0).length() - 1),
                         FileExtensions.class)) {
-                    System.out
-                            .println(name.get(0).substring(name.get(0).indexOf(".") + 1,
-                                    name.get(0).length() - 1));
-
                     Stream<String> lines = Files.lines(Path.of(codeFile.getPath()));
                     lines.forEach(c -> {
                         wrapper2.jsonArray = new JSONArray();

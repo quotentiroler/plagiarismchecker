@@ -1,30 +1,36 @@
-## Plagiarism detection based on document fingerprint creation + comparison
-### Check multiple C++ source-dirs for plagiarism
+# Plagiarism Detection Tool
 
-This maven application can be packed into an executable .jar-file using the following command: 
+This tool allows you to detect plagiarism in code by comparing document fingerprints. It supports two methods of input:
 
-```mvn clean compile assembly:single```
+1. Entering URLs of GitHub repositories into a textarea.
+2. Manually uploading a zip file.
 
-Run it, then open localhost:8080 in your browser
+## How to Use
 
-How to use:
+### Method 1: GitHub Repositories
 
-1. Have every source dir in a folder which name starts with "task"
-2. Do not have sub-dirs in the source dirs
-3. Zip all the source-dirs
-4. Upload .zip file
-5. (Optional) Exclude fingerprints by uploading a .json file from upload-dir/results - e.g. assignment code
-6. Download results (.txt-files) (you can also find it in folder /upload-dir)
+Enter the URLs of the GitHub repositories you want to check in the provided textarea.
 
-What it does:
+### Method 2: Zip File Upload
 
-1. Walk through src-dirs (they will be compared in the end, need to start with "task")
-2. tokenize every codeFile (split by empty space)
-3. create JSON having format: {"codeFile.cpp":[{"line":[["value"]]}]} - line indicates first occurence of value in codeFile
-4. compare JSON files, log position of equal values
-5. create Summary.txt that gives an overview, and also .json.txt file for every compared source-dir. This includes a JSON having format: {"value":["/codeFile.cpp/0/line/0/position"]}. The value becomes the key because the same value can be in multiple files, while at this point every value is unique. 
+Follow these steps:
 
-What do the results say?
+1. Ensure every source directory is in a folder whose name starts with "task".
+2. Do not include sub-directories in the source directories.
+3. Zip all the source directories.
+4. Upload the .zip file.
+5. (Optional) Exclude fingerprints by uploading a .json file from `upload-dir/results` (e.g., assignment code).
+6. Download the results (.txt-files). You can also find them in the `/upload-dir` folder.
+
+## What it does
+
+1. The tool walks through source directories (they need to start with "task" and will be compared in the end).
+2. It tokenizes every code file (split by empty space).
+3. It creates a JSON file in the format: `{"codeFile.cpp":[{"line":[["value"]]}]}`. Here, "line" indicates the first occurrence of "value" in the code file.
+4. It compares JSON files and logs the position of equal values.
+5. It creates a `Summary.txt` that gives an overview, and also a `.json.txt` file for every compared source directory. This includes a JSON in the format: `{"value":["/codeFile.cpp/0/line/0/position"]}`. The "value" becomes the key because the same value can be in multiple files, while at this point every value is unique.
+
+## Results
 
 The results show a fingerprint similarity of 2 source-dirs between 0 and 1, representing the ratio of matching values to all values. The code files need to be formatted in a IDE-typical way to have accurate results. The results look like this:
 

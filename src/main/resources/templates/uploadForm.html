@@ -1,38 +1,72 @@
 <html xmlns:th="https://www.thymeleaf.org">
+    <body>
+        <div th:if="${message}">
+            <h2 th:text="${message}"/>
+        </div>
+        <div>
+            <p>1. Upload a .zip file containing source directories starting with "task.." that do not contain sub-dirs
+                <br>
+                2. (optional) upload a fingerprint (.json) file
+                <br>
+                3. Find results in Summary.txt
+            </p>
+        </div>
+        <div>
+            <form method="POST" enctype="multipart/form-data" action="/">
+                <table>
+                    <tr>
+                        <td>File to upload:</td>
+                        <td>
+                            <input type="file" name="file">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Upload">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div>
+            <p>Or insert GitHub Repository Urls in this text area split by linebreak</p>
+        </div>
+        <div>
+            <form method="POST" action="/github">
+                <table>
+                    <tr>
+                        <td>GitHub Repository URLs:</td>
+                        <td>
+                            <textarea name="repoUrls" rows="5" cols="50"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Process Repositories">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
 
-<body>
 
-	<div th:if="${message}">
-		<h2 th:text="${message}" />
-	</div>
-	<div>
-		<p>1. Upload a .zip file containing source directories starting with "task.." that do not contain sub-dirs, only C++ files<br>
-		2. (optional) upload a footprint (.json) file<br>
-	3. download results</p>
-	</div>
-	<div>
-		<form method="POST" enctype="multipart/form-data" action="/">
-			<table>
-				<tr>
-					<td>File to upload:</td>
-					<td><input type="file" name="file" /></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><input type="submit" value="Upload" /></td>
-				</tr>
-			</table>
-		</form>
-	</div>
+		<div>
+			<p>You can still exclude a fingerprint by uploading a .json file above</p>
+		</div>
 
-	<div>
-		<ul>
-			<li th:each="file : ${files}">
-				<a th:href="${file}" th:text="${file}" />
-			</li>
-		</ul>
-	</div>
-
-</body>
-
+        <div>
+            <form method="POST" action="/deleteAll">
+                <input type="submit" value="Delete All">
+            </form>
+        </div>
+        <div>
+            <ul>
+                <li th:each="file : ${files}">
+                    <a th:href="${file}" th:text="${file}"/>
+                </li>
+            </ul>
+        </div>
+    </body>
 </html>

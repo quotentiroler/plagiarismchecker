@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Stream;
 
 public interface StorageService {
@@ -13,6 +14,8 @@ public interface StorageService {
 	void init();
 
 	void store(MultipartFile file) throws JSONException, InterruptedException;
+
+	void storeFromGitHub(List<String> repoUrls) throws JSONException, InterruptedException;
 
 	Stream<Path> loadAll();
 

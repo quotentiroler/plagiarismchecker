@@ -1,27 +1,15 @@
-package com.example.plagcheck.ProcessJSON;
+package com.example.plagcheck.util;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.tools.ant.taskdefs.Sleep;
-import org.apache.tools.ant.taskdefs.WaitFor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import ch.qos.logback.core.joran.conditional.ElseAction;
 
 public class ExcludeFingerprints {
 
