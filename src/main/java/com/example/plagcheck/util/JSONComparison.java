@@ -1,4 +1,4 @@
-package com.example.plagcheck.ProcessJSON;
+package com.example.plagcheck.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,9 +24,12 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.gwt.dev.util.collect.HashSet;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.json.JSONObject;
 import java.lang.reflect.Type;
 
+@Slf4j
 public class JSONComparison {
 
     private Map<String, Object> matches;
@@ -59,6 +62,32 @@ public class JSONComparison {
         matches = flatten(leftMap);
     }
 
+    
+    public JSONComparison(JSONObject leftJson, JSONObject rightJson) {
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, Object>>() {
+        }.getType();
+
+        Map<String, Object> leftMap = gson.fromJson(leftJson.toString(), type);
+        Map<String, Object> rightMap = gson.fromJson(rightJson.toString(), type);
+        Map<String, Object> leftFlatMap = flatten(leftMap);
+        Map<String, Object> rightFlatMap = flatten(rightMap);
+
+        HashSet<String> values = new HashSet<>();
+        rightFlatMap.forEach((k, v) -> values.add((String) v));
+        matchesJSON = new JSONObject();
+
+        leftFlatMap.forEach((k, v) -> {
+            if (!values.add((String) v)) {
+                matchesJSON.append((String) v, k);
+            }
+        });
+        totalTokens = values.size();
+        leftMap = gson.fromJson(matchesJSON.toString(), type);
+        matches = flatten(leftMap);
+    }
+
     public JSONComparison(Path srcDir)
             throws JsonIOException, JsonSyntaxException, IOException {
 
@@ -73,7 +102,7 @@ public class JSONComparison {
                             JSONObject rightJson = ExcludeFingerprints.parseJSONFile(files[j].toString());
                             JSONComparison c = new JSONComparison(leftJson, rightJson);
                             new File(srcDir + "/out/").mkdirs();
-                            Path dest = Paths.get(srcDir + "/out/" + files[i].getName() + ".txt");
+                            Path dest = Paths.get(srcDir + "/out/" + files[i].getName().replace(".json", "-analysis") + ".txt");
                             int matches = c.getMatchesJSON().length();
                             int total = c.getTotalTokens();
                             String out = "";
@@ -107,30 +136,6 @@ public class JSONComparison {
         }
 
         Files.write(Paths.get(srcDir + "/out/Summary.txt"), List.of(summary));
-    }
-
-    public JSONComparison(JSONObject leftJson, JSONObject rightJson) {
-
-        Gson gson = new Gson();
-        Type type = new TypeToken<Map<String, Object>>() {
-        }.getType();
-
-        Map<String, Object> leftMap = gson.fromJson(leftJson.toString(), type);
-        Map<String, Object> rightMap = gson.fromJson(rightJson.toString(), type);
-        Map<String, Object> leftFlatMap = flatten(leftMap);
-        Map<String, Object> rightFlatMap = flatten(rightMap);
-        HashSet<String> values = new HashSet<>();
-        rightFlatMap.forEach((k, v) -> values.add((String) v));
-        matchesJSON = new JSONObject();
-
-        leftFlatMap.forEach((k, v) -> {
-            if (!values.add((String) v)) {
-                matchesJSON.append((String) v, k);
-            }
-        });
-        totalTokens = values.size();
-        leftMap = gson.fromJson(matchesJSON.toString(), type);
-        matches = flatten(leftMap);
     }
 
     public int getTotalTokens() {

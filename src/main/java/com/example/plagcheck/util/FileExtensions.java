@@ -1,9 +1,10 @@
-package com.example.plagcheck.ProcessJSON;
+package com.example.plagcheck.util;
 public enum FileExtensions implements IFileType {
 
     CPP(".cpp"),
     H(".h"),
-    HPP(".hpp");
+    HPP(".hpp"),
+    JAVA(".java");
 
  private String extension ="";
 

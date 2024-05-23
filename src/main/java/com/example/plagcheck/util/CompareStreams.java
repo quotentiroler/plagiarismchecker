@@ -1,4 +1,4 @@
-package com.example.plagcheck.ProcessJSON;
+package com.example.plagcheck.util;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -60,21 +60,25 @@ public class CompareStreams {
                         StandardOpenOption.APPEND,
                         StandardOpenOption.WRITE);
 
-                compareStreams(Files.lines(Path.of(resultDir.toFile().listFiles()[i].getPath())),
-                        Files.lines(Path.of(resultDir.toFile().listFiles()[j].getPath())),
-                        Paths.get(resultDir.toFile().listFiles()[i].toString()));
+                        compareStreams(
+                            Path.of(resultDir.toFile().listFiles()[i].getPath()),
+                            Path.of(resultDir.toFile().listFiles()[j].getPath()),
+                            Paths.get(resultDir.toFile().listFiles()[i].toString())
+                        );
 
             }
         }
     }
-
-    static <T> void compareStreams(Stream<?> s1, Stream<?> s2, Path resultDir) throws IOException {
-
+    static <T> void compareStreams(Path path1, Path path2, Path resultDir) throws IOException {
         Comparator<String> comparator = String::compareTo;
-        Iterator<?> iter1 = s1.iterator(), iter2 = s2.iterator();
-        String matches = compareEntriesOfTwoStreams((Iterator<T>) iter1, (Iterator<T>) iter2,
-                (Comparator<T>) comparator);
-        Files.write(resultDir, List.of(matches), StandardOpenOption.APPEND, StandardOpenOption.WRITE);
+    
+        try (Stream<String> s1 = Files.lines(path1);
+             Stream<String> s2 = Files.lines(path2)) {
+            Iterator<?> iter1 = s1.iterator(), iter2 = s2.iterator();
+            String matches = compareEntriesOfTwoStreams((Iterator<T>) iter1, (Iterator<T>) iter2,
+                    (Comparator<T>) comparator);
+            Files.write(resultDir, List.of(matches), StandardOpenOption.APPEND, StandardOpenOption.WRITE);
+        }
     }
 
 }
