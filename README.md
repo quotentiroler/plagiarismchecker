@@ -1,6 +1,6 @@
 # Plagiarism Detection Tool
 
-This tool allows you to detect plagiarism in code by comparing document fingerprints. It supports two methods of input:
+This tool allows you to detect potential plagiarism in code by comparing document fingerprints. It supports two methods of input:
 
 1. Entering URLs of GitHub repositories into a textarea.
 2. Manually uploading a zip file.
