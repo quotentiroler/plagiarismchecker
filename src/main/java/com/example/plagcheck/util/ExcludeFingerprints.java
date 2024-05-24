@@ -20,7 +20,6 @@ public class ExcludeFingerprints {
         result = new JSONObject(object.toString());
 
         JSONComparison c = new JSONComparison(object, fingerPrints);
-        System.out.println(c.getMatches().size());
 
         var wrapper = new Object() {
             int i = 0;
@@ -29,14 +28,9 @@ public class ExcludeFingerprints {
 
         c.getMatches().forEach((k, v) -> {
             String f = k;
-            System.out.println(f);
             k = f.substring(f.indexOf("/")+1, f.lastIndexOf("/"));
-            System.out.println(k);
             String[] loc = ((String) v).split("/");
             wrapper.i = indexOf(result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0), k);
-            System.out.println("To remove: " + k + " at " + v + ", removing:");
-            System.out.println(result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
-                    .remove(wrapper.i));
 
         });
         result = removeNullsFrom(result);
@@ -50,16 +44,13 @@ public class ExcludeFingerprints {
         result = parseJSONFile(jsonFile.toString());
 
         JSONComparison c = new JSONComparison(object, fingerPrints);
-        System.out.println(c.getMatches().size());
 
         c.getMatches().forEach((k, v) -> {
-            System.out.println(k);
             k = k.split("/")[1];
             String[] loc = ((String) v).split("/");
             int i = indexOf(result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0), k);
             result.getJSONArray(loc[1]).getJSONObject(0).getJSONArray(loc[3]).getJSONArray(0)
                     .remove(i);
-
         });
         result = removeNullsFrom(result);
 

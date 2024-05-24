@@ -86,7 +86,6 @@ public class ComparisonController {
 			RedirectAttributes redirectAttributes) throws JSONException, InterruptedException {
 		try {
 			List<String> urls = Arrays.asList(repoUrls.split("\\s+"));
-			System.out.println(urls);
 			storageService.storeFromGitHub(urls);
 			redirectAttributes.addFlashAttribute("message",
 					"You successfully processed " + urls.size() + " GitHub repositories!");
