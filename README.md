@@ -9,6 +9,13 @@ This tool can be very helpful if you are a lecturer or a tutor and you want to f
 
 ## How to Use
 
+
+Download the executable file from [here](https://www.file-upload.net/download-15334347/PlagCheckApp.exe.html)
+
+or clone and run this app. This maven application can be packed into an executable .jar-file using the following command: 
+
+```mvn clean compile assembly:single```
+
 ### Method 1: GitHub Repositories
 
 Enter the URLs of the GitHub repositories you want to check in the provided textarea.
