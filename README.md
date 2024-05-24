@@ -5,7 +5,7 @@ This tool allows you to detect plagiarism in code by comparing document fingerpr
 1. Entering URLs of GitHub repositories into a textarea.
 2. Manually uploading a zip file.
 
-This tool can be very helpful if you are a lecturer or a tutor and you want to find out if your students were working together.
+This tool can be very helpful if you are a lecturer or a tutor and you want to find out if your students were working together on an assignment.
 
 ## How to Use
 
