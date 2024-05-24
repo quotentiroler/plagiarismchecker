@@ -24,13 +24,15 @@ Follow these steps:
 5. (Optional) Exclude fingerprints by uploading a .json file from `upload-dir/results` (e.g., assignment code).
 6. Download the results (.txt-files). You can also find them in the `/upload-dir` folder.
 
-## What it does
+## Explanation
 
-1. The tool walks through source directories (they need to start with "task" and will be compared in the end).
-2. It tokenizes every code file (split by empty space).
+1. The tool walks through source directories.
+2. It tokenizes every code file (split by empty space) and makes every token unique by hashing them.
 3. It creates a JSON file in the format: `{"codeFile.cpp":[{"line":[["value"]]}]}`. Here, "line" indicates the first occurrence of "value" in the code file.
 4. It compares JSON files and logs the position of equal values.
-5. It creates a `Summary.txt` that gives an overview, and also a `.json.txt` file for every compared source directory. This includes a JSON in the format: `{"value":["/codeFile.cpp/0/line/0/position"]}`. The "value" becomes the key because the same value can be in multiple files, while at this point every value is unique.
+5. It creates a `Summary.txt` that gives an overview, and also a `.json.txt` file for every compared source directory. This includes a JSON in the format: `{"value":["/codeFile.cpp/0/line/0/position"]}`. The "value" becomes the key because the same value can be in multiple files, while at this point every value is unique. Example token "token" has multiple positions, "token" is the key and its positions are the values in an array.
+
+It will be furtherly developed (slowly). In the future, the positions of the tokens will be analyzed to give more accurate results.
 
 ## Results
 
@@ -56,11 +58,17 @@ task1-aaaaa.json compared to task1-ffffff.json: Total matches = 1 Unique entries
 /server_thread.h/0/4/0/0: "shared.h"
 ```
 
-The similarity is usually very low for different code files. For any similarity that is clearly above average, further investigation is recommended. The use of the tool alone is not sufficient to conscientiously detect plagiarism. 
+The similarity is usually very low for different code files. For any similarity that is clearly above average, further investigation is recommended.
 
-Testing:
+The use of the tool alone is not sufficient to conscientiously detect plagiarism!
+
+## Testing:
 
 Test folder is not up to date with code. You can test the fingerprint exclusion functionality at
 localhost:8080/excludefp
+
+In fact, fingerprint exclusion is an important function of this lib. If you are a tutor or a lecturer of computer science related subjects, you most likely gave your students some kind of assignment code which also has its own document fingerprint. You can first generate the fingerprint and then upload only that fingerprint file in order to remove the fingerprint from the rest of the analysis. This makes the results significantly more accurate.
+
+
 
 
